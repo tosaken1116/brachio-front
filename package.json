@@ -4,6 +4,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "wrangler pages dev dist",
+    "new:ui": "scaffdog generate ui",
+    "new:model": "scaffdog generate model",
+    "new:page": "scaffdog generate page",
     "deploy": "$npm_execpath run build && wrangler pages deploy dist"
   },
   "dependencies": {
@@ -13,6 +16,7 @@
     "@cloudflare/workers-types": "^4.20240129.0",
     "@hono/vite-cloudflare-pages": "^0.2.4",
     "@hono/vite-dev-server": "^0.5.0",
+    "scaffdog": "^3.0.0",
     "vite": "^5.0.12",
     "wrangler": "^3.25.0"
   }
