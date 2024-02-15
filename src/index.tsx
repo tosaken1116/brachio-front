@@ -1,6 +1,7 @@
 import { sentry } from "@hono/sentry";
 import { Hono } from "hono";
 import { renderer } from "./renderer";
+import Stripe from "./server/stripe";
 
 type bindings = {
 	SENTRY_DSN: string;
@@ -14,6 +15,9 @@ app.use("*", async (c, next) => {
 });
 
 app.get("*", renderer);
+
+// Routing
+app.route("/payment", Stripe);
 
 app.get("/", (c) => {
 	return c.render(<h1>Hello!</h1>);
