@@ -14,7 +14,9 @@
 		"format:biome-format": "biome format --write --no-errors-on-unmatched .",
 		"format:biome-apply": "biome lint --apply --no-errors-on-unmatched .",
 		"format": "run-s format:*",
-		"prepare": "husky"
+		"prepare": "husky",
+		"migration:dev": "wrangler d1 migrations apply --local hono_db",
+		"migration:prod": "wrangler d1 migrations apply hono_db"
 	},
 	"dependencies": {
 		"@hono/zod-validator": "^0.1.11",
