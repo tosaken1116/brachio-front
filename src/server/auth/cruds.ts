@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { BetterSQLite3Database } from "drizzle-orm/better-sqlite3";
+import type { DrizzleD1Database } from "drizzle-orm/d1";
 import { v4 as uuidv4 } from "uuid";
 import { users } from "../../scripts/schema";
 import { FunctionResult } from "./model";
@@ -10,19 +10,19 @@ type CreateUserArg = {
 		name: string;
 		password_hash: string;
 	};
-	db: BetterSQLite3Database;
+	db: DrizzleD1Database;
 };
 export const createUser = async ({
 	user,
 	db,
-}: CreateUserArg): Promise<FunctionResult<null>> => {
+}: CreateUserArg): Promise<FunctionResult<string | null>> => {
 	try {
 		const newUser = {
 			id: uuidv4(),
 			...user,
 		};
 		await db.insert(users).values(newUser).execute();
-		return { data: null, error: null, status: 201 };
+		return { data: newUser.id, error: null, status: 201 };
 	} catch (e) {
 		if (e instanceof Error) {
 			return { data: null, error: e.message, status: 400 };
@@ -36,7 +36,7 @@ type LoginUserArg = {
 		email: string;
 		password: string;
 	};
-	db: BetterSQLite3Database;
+	db: DrizzleD1Database;
 };
 
 export const getUser = async ({

@@ -1,8 +1,9 @@
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import { zValidator } from "@hono/zod-validator";
+import { drizzle } from "drizzle-orm/d1";
 import { Hono } from "hono";
-import { sign } from "hono/jwt";
 import { createUser, getUser } from "./cruds";
 import { CreateUserInput, LoginUserInput } from "./model";
+import { sign } from "./utils";
 import { checkPassword, hashPassword } from "./utils";
 
 export type AuthBinding = {
@@ -10,48 +11,43 @@ export type AuthBinding = {
 };
 const app = new Hono<AuthBinding>();
 
-app.post("/signup", async (c) => {
-	const parsed = CreateUserInput.safeParse(c.body);
-	if (!parsed.success) {
-		return c.json({ error: "Invalid input" }, 400);
-	}
+app.post("/signup", zValidator("json", CreateUserInput), async (c) => {
+	const req = c.req.valid("json");
+
 	const db = drizzle(c.env.DB);
 
 	const res = await createUser({
 		user: {
-			...parsed.data,
-			password_hash: await hashPassword(parsed.data.password),
+			...req,
+			password_hash: await hashPassword(req.password),
 		},
 		db,
 	});
 	if (res.error === null) {
-		return c.json({ data: null }, res.status);
+		return c.json({ id: res.data }, res.status);
 	}
 	return c.json({ error: res.error }, res.status);
 });
 
-app.post("/signin", async (c) => {
-	const parsed = LoginUserInput.safeParse(c.body);
-	if (!parsed.success) {
-		return c.json({ error: "Invalid input" }, 400);
-	}
+app.post("/signin", zValidator("json", LoginUserInput), async (c) => {
+	const req = c.req.valid("json");
 	const db = drizzle(c.env.DB);
 
 	const res = await getUser({
 		user: {
-			...parsed.data,
-			password: await hashPassword(parsed.data.password),
+			...req,
+			password: await hashPassword(req.password),
 		},
 		db,
 	});
 	if (res.error !== null || res.data === null) {
 		return c.json({ data: null }, res.status);
 	}
-	if (!(await checkPassword(parsed.data.password, res.data.password_hash))) {
+	if (!(await checkPassword(req.password, res.data.password_hash))) {
 		return c.json({ error: "Invalid password" }, 400);
 	}
 	const token = await sign({ id: res.data.id }, c.env.JWT_SECRET);
-	return c.json({ jwt: token, data: res.data }, res.status);
+	return c.json({ jwt: token, user: res.data }, res.status);
 });
 
 export default app;
