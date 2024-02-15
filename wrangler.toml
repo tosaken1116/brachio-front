@@ -1,6 +1,6 @@
 name = "carcharhinus"
 compatibility_date = "2023-12-01"
-
+account_id = "3c7f2cc039438babe6e28ae8cfede281"
 compatibility_flags = [ "nodejs_compat" ]
 
 # [vars]
