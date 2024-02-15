@@ -1,0 +1,13 @@
+{
+	"version": "5",
+	"dialect": "sqlite",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "5",
+			"when": 1708015443118,
+			"tag": "0000_empty_stepford_cuckoos",
+			"breakpoints": true
+		}
+	]
+}

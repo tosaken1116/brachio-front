@@ -3,8 +3,8 @@ import { instrument } from "@microlabs/otel-cf-workers";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { renderer } from "./renderer";
-import Stripe from "./server/stripe";
 import { config } from "./server/otel";
+import Stripe from "./server/stripe";
 
 type Bindings = {
 	SENTRY_DNS: string;
@@ -43,5 +43,6 @@ app.post("/items", async (c) => {
 	}
 	return c.json({ success: true });
 });
+app.route("/", initializedAuthRouter());
 
 export default instrument(app, config);
