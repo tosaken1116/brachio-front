@@ -1,12 +1,13 @@
 import { sentry } from "@hono/sentry";
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { renderer } from "./renderer";
 
-type bindings = {
+type Bindings = {
 	SENTRY_DSN: string;
 };
 
-const app = new Hono<{ Bindings: bindings }>();
+const app = new Hono<{ Bindings: Bindings }>();
 
 app.use("*", async (c, next) => {
 	const sentryMiddleware = sentry({ dsn: c.env.SENTRY_DSN });
