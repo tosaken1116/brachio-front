@@ -6,7 +6,7 @@ import { renderer } from "./renderer";
 import { config } from "./server/otel";
 
 type Bindings = {
-	SENTRY_DSN: string;
+	SENTRY_DNS: string;
 	KV: KVNamespace;
 	DB: D1Database;
 };
@@ -15,7 +15,7 @@ const app = new Hono<{ Bindings: Bindings }>();
 
 app.use("*", async (c, next) => {
 	const sentryMiddleware = sentry({
-		dsn: c.env.SENTRY_DSN,
+		dsn: c.env.SENTRY_DNS,
 		tracesSampleRate: 1.0,
 	});
 	return await sentryMiddleware(c, next);
