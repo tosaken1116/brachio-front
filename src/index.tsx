@@ -3,7 +3,7 @@ import { instrument } from "@microlabs/otel-cf-workers";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { renderer } from "./renderer";
-import { initializedAuthRouter } from "./server/auth";
+import Auth from "./server/auth";
 import { config } from "./server/otel";
 import Stripe from "./server/stripe";
 
@@ -27,6 +27,7 @@ app.get("*", renderer);
 
 // Routing
 app.route("/payment", Stripe);
+app.route("", Auth);
 
 app.get("/", async (c) => {
 	return c.render(<h1>Hello!</h1>);
@@ -44,6 +45,5 @@ app.post("/items", async (c) => {
 	}
 	return c.json({ success: true });
 });
-app.route("/", initializedAuthRouter());
 
 export default instrument(app, config);

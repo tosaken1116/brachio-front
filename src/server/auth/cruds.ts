@@ -1,13 +1,8 @@
-import { D1ExecResult } from "@cloudflare/workers-types";
 import { eq } from "drizzle-orm";
 import { BetterSQLite3Database } from "drizzle-orm/better-sqlite3";
-import { uuid } from "drizzle-orm/pg-core";
-import { Context } from "hono";
-import { Bindings } from "hono/types";
 import { v4 as uuidv4 } from "uuid";
 import { users } from "../../scripts/schema";
-import { CreateUserInput, CreateUserInputType, FunctionResult } from "./model";
-import { AuthBinding } from "./router";
+import { FunctionResult } from "./model";
 
 type CreateUserArg = {
 	user: {
