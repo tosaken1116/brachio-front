@@ -8,13 +8,10 @@ const paperAnimation = keyframes`
   }
 `;
 
-const scrollAnimation = keyframes`
-  0% {
-    right: 400;
-  }
-  100% {
-    right: 0;
-  }
+export const openScroll = css`
+  animation-name: ${paperAnimation};
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
 `;
 
 export const scroll = css`
@@ -58,6 +55,7 @@ export const container = css`
   display: flex;
 `;
 export const paper = css`
+  width: 0px;
   background-color: #eea;
   transform-origin: right;
   aspect-ratio: 1.6/1;
@@ -68,9 +66,6 @@ export const paper = css`
   animation-fill-mode: forwards;
   overflow: scroll;
   transform-origin: right;
-  animation-name: ${paperAnimation};
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
   border-radius: 16px 0 0 16px;
   border: 16px solid green;
   position: relative;
@@ -79,4 +74,13 @@ export const paper = css`
 export const stopper = css`
   width: 10px;
   background-color: black;
+`;
+
+export const closeButton = css`
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;
