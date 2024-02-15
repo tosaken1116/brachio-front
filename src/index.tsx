@@ -3,6 +3,7 @@ import { instrument } from "@microlabs/otel-cf-workers";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { renderer } from "./renderer";
+import Stripe from "./server/stripe";
 import { config } from "./server/otel";
 
 type Bindings = {
@@ -22,6 +23,9 @@ app.use("*", async (c, next) => {
 });
 
 app.get("*", renderer);
+
+// Routing
+app.route("/payment", Stripe);
 
 app.get("/", async (c) => {
 	return c.render(<h1>Hello!</h1>);
