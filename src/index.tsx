@@ -2,10 +2,14 @@ import { sentry } from "@hono/sentry";
 import { Hono } from "hono";
 import { renderer } from "./renderer";
 
-const app = new Hono();
+type bindings = {
+	SENTRY_DSN: string;
+};
+
+const app = new Hono<{ Bindings: bindings }>();
 
 app.use("*", async (c, next) => {
-	const sentryMiddleware = sentry({ dsn: c.env?.SENTRY_DSN as string });
+	const sentryMiddleware = sentry({ dsn: c.env.SENTRY_DSN });
 	return await sentryMiddleware(c, next);
 });
 
