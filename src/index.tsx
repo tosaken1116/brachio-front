@@ -3,8 +3,9 @@ import { instrument } from "@microlabs/otel-cf-workers";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { renderer } from "./renderer";
-import Stripe from "./server/stripe";
+import Auth from "./server/auth";
 import { config } from "./server/otel";
+import Stripe from "./server/stripe";
 
 type Bindings = {
 	SENTRY_DNS: string;
@@ -26,6 +27,7 @@ app.get("*", renderer);
 
 // Routing
 app.route("/payment", Stripe);
+app.route("", Auth);
 
 app.get("/", async (c) => {
 	return c.render(<h1>Hello!</h1>);
