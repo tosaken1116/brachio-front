@@ -1,11 +1,10 @@
 import { sentry } from "@hono/sentry";
 import { instrument } from "@microlabs/otel-cf-workers";
 import { Hono } from "hono";
-import { HTTPException } from "hono/http-exception";
 import { renderer } from "./renderer";
 import Auth from "./server/auth";
+import Balance from "./server/balance";
 import { config } from "./server/otel";
-import Stripe from "./server/stripe";
 
 type Bindings = {
 	SENTRY_DNS: string;
@@ -26,24 +25,11 @@ app.use("*", async (c, next) => {
 app.get("*", renderer);
 
 // Routing
-app.route("/payment", Stripe);
+app.route("/balance", Balance);
 app.route("", Auth);
 
 app.get("/", async (c) => {
 	return c.render(<h1>Hello!</h1>);
-});
-
-app.get("/items", async (c) => {
-	const item = await c.env.KV.get("aa");
-	return c.json({ success: true, aa: item });
-});
-
-app.post("/items", async (c) => {
-	const { value } = await c.req.json();
-	if (typeof value === "string") {
-		await c.env.KV.put("aa", value);
-	}
-	return c.json({ success: true });
 });
 
 export default instrument(app, config);
