@@ -6,13 +6,7 @@ import Auth from "./server/auth";
 import Balance from "./server/balance";
 import { config } from "./server/otel";
 
-type Bindings = {
-	SENTRY_DNS: string;
-	KV: KVNamespace;
-	DB: D1Database;
-};
-
-const app = new Hono<{ Bindings: Bindings }>();
+const app = new Hono();
 
 app.use("*", async (c, next) => {
 	const sentryMiddleware = sentry({
@@ -32,4 +26,5 @@ app.get("/", async (c) => {
 	return c.render(<h1>Hello!</h1>);
 });
 
-export default instrument(app, config);
+// export default instrument(app, config);
+export default app;

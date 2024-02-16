@@ -6,10 +6,7 @@ import { CreateUserInput, LoginUserInput } from "./model";
 import { sign } from "./utils";
 import { checkPassword, hashPassword } from "./utils";
 
-export type AuthBinding = {
-	Bindings: { DB: D1Database; JWT_SECRET: string };
-};
-const app = new Hono<AuthBinding>();
+const app = new Hono();
 
 app.post("/signup", zValidator("json", CreateUserInput), async (c) => {
 	const req = c.req.valid("json");

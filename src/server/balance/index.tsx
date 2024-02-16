@@ -1,51 +1,18 @@
 import { Hono } from "hono";
 import Stripe from "stripe";
 import { CreatePaymentResponse, schema } from "./schema";
+import { CreatePaymentIntent, MakeDeposit } from "./usecase";
 
-type Bindings = {
-	STRIPE_PUBLISHABLE_KEY: string;
-	STRIPE_SECRET_KEY: string;
-	STRIPE_WEBHOOK_SECRET: string;
-};
-
-type Variables = {
-	stripe: Stripe;
-};
-
-const app = new Hono<{
-	Bindings: Bindings;
-	Variables: Variables;
-}>();
-
-app.use((c, next) => {
-	const stripe = new Stripe(c.env.STRIPE_SECRET_KEY);
-	c.set("stripe", stripe);
-	return next();
-});
+const app = new Hono();
 
 // Create PaymentIntent
-const post = app.post("/", schema.createPayment, async (c) => {
+const post = app.post("/charge", schema.createPayment, async (c) => {
 	const { amount } = c.req.valid("json");
 
-	const stripe = c.get("stripe");
-	// const stripe = new Stripe(c.env.STRIPE_SECRET_KEY);
-	let paymentIntent: Stripe.Response<Stripe.PaymentIntent>;
-
-	// Create PaymentIntent
-	try {
-		paymentIntent = await stripe.paymentIntents.create({
-			amount: amount,
-			currency: "jpy",
-		});
-	} catch (error) {
-		console.error(error);
-		return c.json({ message: "Internal Server Error" }, 500);
-	}
-
-	const response: CreatePaymentResponse = {
-		clientSecret: paymentIntent.client_secret ?? "",
-		publishableKey: c.env.STRIPE_PUBLISHABLE_KEY,
-	};
+	const response = await CreatePaymentIntent(c, {
+		userId: c.var.userId,
+		amount: amount,
+	});
 
 	return c.json(response);
 });
@@ -57,7 +24,7 @@ app.post("/webhook", async (c) => {
 		return c.json({ message: "Invalid signature" }, 400);
 	}
 
-	const stripe = c.get("stripe");
+	const stripe = new Stripe(c.env.STRIPE_SECRET_KEY);
 	let event: Stripe.Event;
 	try {
 		const body = await c.req.text();
@@ -74,6 +41,10 @@ app.post("/webhook", async (c) => {
 	switch (event.type) {
 		case "payment_intent.succeeded":
 			console.log("💰 PaymentIntent was successful!");
+			await MakeDeposit(c, {
+				userId: "hoge",
+				amount: event.data.object.amount,
+			});
 			// Then define and call a function to handle the event payment_intent.succeeded
 			break;
 		case "payment_intent.created":
