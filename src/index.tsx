@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { renderer } from "./renderer";
 import Auth from "./server/auth";
 import Balance from "./server/balance";
+import Omikuji from "./server/omikuji";
 import { config } from "./server/otel";
 
 type Bindings = {
@@ -27,6 +28,7 @@ app.get("*", renderer);
 // Routing
 app.route("/balance", Balance);
 app.route("", Auth);
+app.route("/omikuji", Omikuji);
 
 app.get("/", async (c) => {
 	return c.render(<h1>Hello!</h1>);
