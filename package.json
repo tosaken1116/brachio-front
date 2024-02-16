@@ -15,6 +15,7 @@
 		"format:biome-apply": "biome lint --apply --no-errors-on-unmatched .",
 		"format": "run-s format:*",
 		"prepare": "husky",
+		"gen:migration": "drizzle-kit generate:sqlite",
 		"migration:dev": "wrangler d1 migrations apply --local hono_db",
 		"migration:prod": "wrangler d1 migrations apply hono_db"
 	},

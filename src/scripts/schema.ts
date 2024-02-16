@@ -13,3 +13,15 @@ export const users = sqliteTable("users", {
 		sql`CURRENT_TIMESTAMP`,
 	),
 });
+
+export const omikuji = sqliteTable("omikuji", {
+	id: text("id").primaryKey(),
+	grade: text("grade").notNull(),
+	probability: integer("probability").notNull(),
+	created_at: integer("created_at", { mode: "timestamp_ms" }).default(
+		sql`CURRENT_TIMESTAMP`,
+	),
+	updated_at: integer("updated_at", { mode: "timestamp_ms" }).default(
+		sql`CURRENT_TIMESTAMP`,
+	),
+});
