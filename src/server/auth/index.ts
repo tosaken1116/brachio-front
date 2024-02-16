@@ -1,9 +1,10 @@
 import { zValidator } from "@hono/zod-validator";
 import { drizzle } from "drizzle-orm/d1";
 import { Hono } from "hono";
+import { TOKEN_EXPIRATION } from "./constant";
 import { createUser, getUser } from "./cruds";
 import { CreateUserInput, LoginUserInput } from "./model";
-import { sign } from "./utils";
+import { decode, sign, verify } from "./utils";
 import { checkPassword, hashPassword } from "./utils";
 
 export type AuthBinding = {
@@ -46,8 +47,30 @@ app.post("/signin", zValidator("json", LoginUserInput), async (c) => {
 	if (!(await checkPassword(req.password, res.data.password_hash))) {
 		return c.json({ error: "Invalid password" }, 400);
 	}
-	const token = await sign({ id: res.data.id }, c.env.JWT_SECRET);
+	const payload = {
+		id: res.data.id,
+		exp: Math.floor(Date.now() / 1000) + TOKEN_EXPIRATION,
+	};
+	const token = await sign(payload, c.env.JWT_SECRET);
 	return c.json({ jwt: token, user: res.data }, res.status);
+});
+
+app.get("/decode", (c) => {
+	const token = c.req.header("Authorization");
+	if (token === undefined) {
+		return c.json({ error: "No token" }, 400);
+	}
+	const decoded = decode(token);
+	return c.json({ data: decoded }, 200);
+});
+
+app.get("/verify", async (c) => {
+	const token = c.req.header("Authorization");
+	if (token === undefined) {
+		return c.json({ error: "No token" }, 400);
+	}
+	const decoded = await verify(token, c.env.JWT_SECRET);
+	return c.json({ data: decoded }, 200);
 });
 
 export default app;
