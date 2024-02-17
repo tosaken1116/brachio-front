@@ -1,9 +1,9 @@
-import { FAQForm } from "@/components/domains/FAQ/components/FAQForm";
+import { Comment } from "@/components/domains/Live/components/Comment";
 
 export const Root = () => {
 	return (
 		<>
-			<FAQForm />
+			<Comment />
 		</>
 	);
 };

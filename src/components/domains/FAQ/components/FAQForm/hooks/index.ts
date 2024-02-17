@@ -55,7 +55,7 @@ export const useFAQForm = (): IUseFAQForm => {
 						{
 							method: "POST",
 							body: JSON.stringify({
-								input: chats[chats.length - 2].message,
+								prompt: chats[chats.length - 2].message,
 							}),
 							headers: {
 								"Content-Type": "application/json",
