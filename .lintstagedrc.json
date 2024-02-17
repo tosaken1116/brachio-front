@@ -4,5 +4,6 @@
 		"biome check --apply-unsafe --no-errors-on-unmatched",
 		"biome format --write --no-errors-on-unmatched",
 		"biome lint --apply --no-errors-on-unmatched"
-	]
+	],
+	"*.css": ["stylelint"]
 }
