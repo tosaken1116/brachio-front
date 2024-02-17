@@ -19,10 +19,10 @@ export const ScrollPaper = ({
 	return (
 		<div className={cn(styles.container, className)}>
 			<div className={styles.scroll} />
-			<div className={cx(styles.paper, isOpen && styles.openScroll)}>
+			<div className={cx(styles.paper, isOpen && styles["open-scroll"])}>
 				<button
 					onClick={handleClose}
-					className={styles.closeButton}
+					className={styles["close-button"]}
 					type="button"
 				>
 					<CloseIcon />

@@ -1,14 +1,14 @@
-@keyframes paperAnimation {
-
+@keyframes paper-animation {
 0% {
-  width: 0px;
+  width: 0;
 }
+
 100% {
   width: 100%;
 }
 }
 
-.openScroll{  animation-name: paperAnimation;
+.open-scroll{  animation-name: paper-animation;
 animation-duration: 1s;
 animation-timing-function: ease-in-out;
 }
@@ -24,7 +24,8 @@ transform: translateY(-15%);
 border-radius: 20px;
 scale: 1 0.8;
 z-index: 1;
-&:after {
+
+&::after {
   content: "";
   position: absolute;
   top: -3;
@@ -36,7 +37,8 @@ z-index: 1;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   background-color: black;
 }
-&:before {
+
+&::before {
   content: "";
   position: absolute;
   top: 0;
@@ -47,16 +49,16 @@ z-index: 1;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   background-color: #0f0;
 }}
-.container{
 
+.container{
   position: relative;
   width: fit-content;
   display: flex;
 }
+
  .paper {
-  width: 0px;
+  width: 0;
   background-color: #eea;
-  transform-origin: right;
   aspect-ratio: 1.6/1;
   writing-mode: vertical-rl;
   padding: 16px;
@@ -75,7 +77,7 @@ z-index: 1;
   background-color: black;
 }
 
-.closeButton {
+.close-button {
   position: absolute;
   top: 0;
   right: 0;
