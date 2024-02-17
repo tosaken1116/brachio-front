@@ -31,6 +31,9 @@ export const useFAQForm = (): IUseFAQForm => {
 		});
 		setChat("");
 	};
+	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+		setChat(e.target.value);
+	};
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (chats.length === 0) {
@@ -46,8 +49,24 @@ export const useFAQForm = (): IUseFAQForm => {
 		(async () => {
 			setIsLoading(true);
 			const botTalk: TalkType = await (async () => {
-				await new Promise((resolve) => setTimeout(resolve, 1000));
-				return { talker: "bot", message: "I am a bot" };
+				try {
+					const res = await fetch(
+						`${import.meta.env.VITE_FAQ_BACKEND_URL}/bedrock`,
+						{
+							method: "POST",
+							body: JSON.stringify({
+								input: chats[chats.length - 2].message,
+							}),
+							headers: {
+								"Content-Type": "application/json",
+							},
+						},
+					);
+					const data = await res.json();
+					return { talker: "bot", message: data.completion };
+				} catch (e) {
+					return { talker: "bot", message: "エラーが発生しました" };
+				}
 			})();
 			setIsLoading(false);
 			setChats((prev) => {
@@ -55,9 +74,6 @@ export const useFAQForm = (): IUseFAQForm => {
 			});
 		})();
 	}, [chats]);
-	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-		setChat(e.target.value);
-	};
 
 	return { chat, chats, isLoading, isEmpty, handleChange, handleTalkSubmit };
 };
