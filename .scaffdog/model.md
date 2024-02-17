@@ -1,6 +1,6 @@
 ---
 name: "model"
-root: "src/client/components/domains"
+root: "src/components/domains"
 output: "."
 questions:
   name: "component name"

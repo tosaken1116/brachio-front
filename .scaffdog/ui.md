@@ -1,6 +1,6 @@
 ---
 name: 'ui'
-root: 'src/client/components/ui'
+root: 'src/components/ui'
 output: '.'
 ignore: []
 questions:

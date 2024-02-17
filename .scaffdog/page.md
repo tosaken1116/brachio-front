@@ -1,6 +1,6 @@
 ---
 name: "page"
-root: "src/client/components/page"
+root: "src/components/page"
 output: "."
 questions:
   name: "page name"
