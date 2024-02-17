@@ -2,7 +2,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --mode client && vite build",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "new:ui": "scaffdog generate ui",
     "new:model": "scaffdog generate model",
     "new:page": "scaffdog generate page",
