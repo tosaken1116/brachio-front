@@ -31,7 +31,8 @@ questions:
 import { {{ name }}Container } from './container';
 {{include(inputs.gen_files,"loading" )|| "import { " + name + "LoadingPresentation } from './presentations/loading'"}}
 {{include(inputs.gen_files,"error" )|| "import { " + name + "ErrorPresentation } from './presentations/error'"}}
-import { Suspense, ErrorBoundary } from "hono/jsx";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 {{inputs.have_props||"type Props = {}"}}
 
@@ -86,7 +87,7 @@ export const {{ name }}ErrorPresentation = () => {
 # `{{ domain }}/components/{{ inputs.have_hooks || "!" }}{{ name }}/hooks/index.ts`
 
 ```ts
-import { useState } from "hono/jsx";
+import { useState } from "react";
 
 type IUse{{ name }} = {
   state: string;
