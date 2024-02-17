@@ -1,4 +1,3 @@
-import { LoadingDot } from "@/components/icon/LoadingDot";
 import { ChatContainer } from "@/components/ui/ChatContainer";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
