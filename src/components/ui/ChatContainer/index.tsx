@@ -1,5 +1,5 @@
 import { cn } from "@/libs/cx";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { List } from "../List";
 
 type Props = {
@@ -17,11 +17,18 @@ export const ChatContainer = ({
 	className,
 	alignPattern,
 }: Props) => {
+	const ref = useRef<HTMLDivElement>(null);
+	useEffect(() => {
+		if (ref.current) {
+			ref.current.scrollIntoView({ behavior: "smooth" });
+		}
+	});
 	return (
 		<List className={className}>
 			{chats.map((chat) => {
 				return <Item align={alignPattern(chat)}>{render(chat)}</Item>;
 			})}
+			<div ref={ref} />
 		</List>
 	);
 };
@@ -37,8 +44,8 @@ const Item = ({
 		<div
 			className={cn(
 				"flex",
-				align === "right" && "self-end",
-				align === "left" && "self-start",
+				align === "right" && "justify-end animate-slide-right",
+				align === "left" && "justify-start animate-slide-left",
 			)}
 		>
 			{children}

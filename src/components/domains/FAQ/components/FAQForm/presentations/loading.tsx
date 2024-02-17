@@ -3,7 +3,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export const FAQFormLoadingPresentation = () => {
 	return (
-		<span className="flex flex-row items-center gap-4 mt-4">
+		<span className="flex flex-row items-center gap-4 delay-500">
 			<Avatar className="rounded-full">
 				<AvatarImage src="/bot.webp" />
 			</Avatar>

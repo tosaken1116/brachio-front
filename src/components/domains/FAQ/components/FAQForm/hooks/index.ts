@@ -11,6 +11,7 @@ type IUseFAQForm = {
 export type TalkType = {
 	talker: "user" | "bot";
 	message: string;
+	isBotLoading?: boolean;
 };
 export const useFAQForm = (): IUseFAQForm => {
 	const [chat, setChat] = useState<string>("");
@@ -18,11 +19,15 @@ export const useFAQForm = (): IUseFAQForm => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const isEmpty = chats.length === 0;
 	const handleTalkSubmit = () => {
-		if (chat.length === 0) {
+		if (chat.length === 0 || isLoading) {
 			return;
 		}
 		setChats((prev) => {
-			return [...prev, { talker: "user", message: chat }];
+			return [
+				...prev,
+				{ talker: "user", message: chat },
+				{ talker: "bot", message: "", isBotLoading: true },
+			];
 		});
 		setChat("");
 	};
@@ -31,7 +36,11 @@ export const useFAQForm = (): IUseFAQForm => {
 		if (chats.length === 0) {
 			return;
 		}
-		if (chats[chats.length - 1].talker === "bot") {
+
+		if (
+			chats[chats.length - 1].talker === "bot" &&
+			!chats[chats.length - 1].isBotLoading
+		) {
 			return;
 		}
 		(async () => {
@@ -42,12 +51,13 @@ export const useFAQForm = (): IUseFAQForm => {
 			})();
 			setIsLoading(false);
 			setChats((prev) => {
-				return [...prev, botTalk];
+				return [...prev.slice(0, prev.length - 1), botTalk];
 			});
 		})();
 	}, [chats]);
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setChat(e.target.value);
 	};
+
 	return { chat, chats, isLoading, isEmpty, handleChange, handleTalkSubmit };
 };

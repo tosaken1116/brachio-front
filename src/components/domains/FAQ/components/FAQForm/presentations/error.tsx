@@ -1,3 +1,3 @@
 export const FAQFormErrorPresentation = () => {
-	return <>this is FAQForm error presentation</>;
+	return <p>this is FAQForm error presentation</p>;
 };
