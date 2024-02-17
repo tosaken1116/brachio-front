@@ -19,14 +19,10 @@
   "dependencies": {
     "@aws-sdk/client-bedrock-agent-runtime": "^3.515.0",
     "@radix-ui/react-slot": "^1.0.2",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.0",
     "lucide-react": "^0.331.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.12",
-    "tailwind-merge": "^2.2.1",
-    "tailwindcss-animate": "^1.0.7",
     "trtc-sdk-v5": "^5.4.1"
   },
   "devDependencies": {
@@ -52,7 +48,11 @@
     "tailwindcss": "^3.4.1",
     "toucan-js": "^3.3.1",
     "typescript": "^5.2.2",
-    "vite": "^5.0.12"
+    "vite": "^5.0.12",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0"
   },
   "volta": {
     "node": "21.6.1",

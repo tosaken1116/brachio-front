@@ -1,4 +1,5 @@
 import { BedrockAgentRuntime } from "@aws-sdk/client-bedrock-agent-runtime";
+import { useState } from "react";
 import { ScrollPaper } from "../ui/ScrollPaper";
 import { TextArea } from "../ui/TextArea";
 export async function FAQ() {

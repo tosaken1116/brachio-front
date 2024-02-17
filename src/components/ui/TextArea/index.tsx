@@ -1,8 +1,8 @@
-import { cx } from "hono/css";
-import { baseStyle } from "./index.style";
+import { cn } from "@/libs/cx";
+import styles from "./index.module.css";
 
 type Props = {} & JSX.IntrinsicElements["textarea"];
 
-export const TextArea = ({ ...props }: Props) => {
-	return <textarea class={cx(baseStyle, props.class)} {...props} />;
+export const TextArea = ({ className, ...props }: Props) => {
+	return <textarea className={cn(styles.baseStyle, className)} {...props} />;
 };

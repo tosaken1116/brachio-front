@@ -1,6 +1,4 @@
-import { css } from "hono/css";
-
-export const baseStyle = css`
+.baseStyle {
   border-radius: 8px;
   min-height: 60px;
   padding: 8px;
@@ -11,4 +9,4 @@ export const baseStyle = css`
     border-color: var(--primary-main);
     outline: none;
   }
-`;
+}

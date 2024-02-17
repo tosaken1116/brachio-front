@@ -1,17 +1,10 @@
-import { cx } from "hono/css";
+import { cn } from "@/libs/cx";
+import { cx } from "class-variance-authority";
 import { CloseIcon } from "../../icon/close";
-import {
-	closeButton,
-	container,
-	openScroll,
-	paper,
-	scroll,
-	stopper,
-} from "./index.style";
-
+import styles from "./index.module.css";
 type Props = {
 	children: JSX.Element;
-	class?: string;
+	className?: string;
 	isOpen?: boolean;
 	handleClose?: () => void;
 };
@@ -19,20 +12,24 @@ type Props = {
 const noop = () => {};
 export const ScrollPaper = ({
 	children,
-	class: className,
+	className,
 	isOpen = true,
 	handleClose = noop,
 }: Props) => {
 	return (
-		<div class={cx(container, className)}>
-			<div class={scroll} />
-			<div class={cx(paper, isOpen && openScroll)}>
-				<button onClick={handleClose} class={closeButton} type="button">
+		<div className={cn(styles.container, className)}>
+			<div className={styles.scroll} />
+			<div className={cx(styles.paper, isOpen && styles.openScroll)}>
+				<button
+					onClick={handleClose}
+					className={styles.closeButton}
+					type="button"
+				>
 					<CloseIcon />
 				</button>
 				{children}
 			</div>
-			<div class={stopper} />
+			<div className={styles.stopper} />
 		</div>
 	);
 };
