@@ -3,13 +3,16 @@ description: 'install node_modules and cache them for later use'
 runs:
   using: composite
   steps:
+    - uses: pnpm/action-setup@v3
+      with:
+          version: 8
     - name: Cache node modules
       id: cache-modules
       uses: actions/cache@v4
       with:
         path: '**/node_modules'
-        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/pnpm-lock.yaml') }}
     - name: Install Dependencies
       if: ${{ steps.cache-modules.outputs.cache-hit != 'true' }}
-      run: npm ci
+      run: pnpm install --frozen-lockfile
       shell: bash
