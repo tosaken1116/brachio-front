@@ -1,5 +1,5 @@
-import { Comment } from "@/components/domains/Live/components/Comment";
+import { LiveList } from "@/components/domains/Live/components/LiveList";
 
 export const AllLive = () => {
-	return <Comment />;
+	return <LiveList />;
 };

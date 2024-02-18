@@ -17,11 +17,11 @@ const router = createBrowserRouter([
 		element: <Auth />,
 	},
 	{
-		path: "/live",
+		path: "/lives",
 		element: <AllLive />,
 	},
 	{
-		path: "/live:id",
+		path: "/live/:id",
 		element: <Live />,
 	},
 	{

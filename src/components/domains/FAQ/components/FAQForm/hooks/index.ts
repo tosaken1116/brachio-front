@@ -14,6 +14,8 @@ export type TalkType = {
 	isBotLoading?: boolean;
 };
 export const useFAQForm = (): IUseFAQForm => {
+	const domain = window.location.hostname.split(".")[0];
+
 	const [chat, setChat] = useState<string>("");
 	const [chats, setChats] = useState<TalkType[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -51,7 +53,7 @@ export const useFAQForm = (): IUseFAQForm => {
 			const botTalk: TalkType = await (async () => {
 				try {
 					const res = await fetch(
-						`${import.meta.env.VITE_FAQ_BACKEND_URL}/bedrock`,
+						`${import.meta.env.VITE_FAQ_BACKEND_URL}/${domain}/bedrock`,
 						{
 							method: "POST",
 							body: JSON.stringify({

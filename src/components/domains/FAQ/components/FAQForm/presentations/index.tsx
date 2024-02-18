@@ -25,7 +25,7 @@ export const FAQFormPresentation = ({
 	handleChange,
 	handleTalkSubmit,
 }: Props) => (
-	<div className="flex flex-col p-8 bg-gray-500 w-1/3 h-1/2 min-w-96 min-h-48 rounded-lg gap-4">
+	<div className="flex flex-col p-8 bg-gray-500 w-full h-1/2 min-w-96 min-h-48 rounded-lg gap-4">
 		<div className="flex-grow gap-4 h-[500px] overflow-y-auto">
 			{isEmpty ? (
 				<FAQFormEmptyPresentation />
