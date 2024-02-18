@@ -20,7 +20,7 @@ onAuthStateChanged(auth, (user) => {
 	} else {
 	}
 });
-export const loginWithGoogle = () =>
+export const loginWithGoogle = (redirect: () => void) =>
 	signInWithPopup(auth, provider)
 		.then((result) => {
 			const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -28,7 +28,7 @@ export const loginWithGoogle = () =>
 			const token = credential.idToken;
 			localStorage.setItem("google-token", token ?? "");
 			localStorage.setItem("uid", result.user?.uid ?? "");
-			window.location.href = "/";
+			redirect();
 		})
 		.catch(() => {
 			throw new Error("Google Login Error");

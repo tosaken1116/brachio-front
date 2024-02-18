@@ -12,7 +12,13 @@
 animation-duration: 1s;
 animation-timing-function: ease-in-out;
 }
+.text-top{
+  writing-mode: vertical-rl;
+  left: 5%;
+  top:10%;
+  color:white;
 
+}
 .scroll  {
 height: 140%;
 aspect-ratio: 1 / 8;
@@ -24,6 +30,8 @@ transform: translateY(-15%);
 border-radius: 20px;
 scale: 1 0.8;
 z-index: 1;
+font-size: 12px;
+writing-mode: vertical-rl;
 
 &::after {
   content: "";

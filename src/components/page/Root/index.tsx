@@ -3,8 +3,12 @@ import { FaqQuestionList } from "@/components/domains/FAQ/components/FaqQuestion
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { useKeyCommand } from "@/hooks/KeyCommand";
+import { useNavigate } from "@tanstack/react-router";
+import { startTransition } from "react";
 
 export const Root = () => {
+	const navigate = useNavigate({ from: "/" });
+
 	useKeyCommand(
 		[
 			"ArrowUp",
@@ -19,7 +23,9 @@ export const Root = () => {
 			"a",
 		],
 		() => {
-			window.location.replace("/lives");
+			startTransition(() => {
+				navigate({ to: "/lives" });
+			});
 		},
 	);
 
@@ -35,7 +41,7 @@ export const Root = () => {
 					<FAQForm />
 				</DrawerContent>
 			</Drawer>
-			<div className="h-2/3 max-h-96 overflow-scroll">
+			<div className="h-full overflow-scroll">
 				<FaqQuestionList />
 			</div>
 		</div>

@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { ChangeEvent, useState } from "react";
 
 type IUseFaqSettingForm = {
@@ -21,6 +22,8 @@ export const useFaqSettingForm = (): IUseFaqSettingForm => {
 		projectId: "",
 		url: "",
 	});
+	const navigate = useNavigate({ from: "/" });
+
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setInput({ ...input, [e.target.name]: e.target.value });
 	};
@@ -39,7 +42,7 @@ export const useFaqSettingForm = (): IUseFaqSettingForm => {
 			);
 			const data = await res.json();
 			if (data.status === 201) {
-				window.location.href = "/";
+				navigate({ to: "/" });
 			}
 		} catch (e) {
 			// biome-ignore lint/complexity/noUselessCatch: <explanation>

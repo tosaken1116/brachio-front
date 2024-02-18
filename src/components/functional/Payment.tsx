@@ -2,6 +2,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { useNavigate } from "@tanstack/react-router";
 import { FormEvent, Suspense } from "react";
 import useSWR from "swr";
 import { LoadingDot } from "../icon/LoadingDot";
@@ -59,6 +60,8 @@ export const PaymentFormContainer = ({
 }) => {
 	const url = new URL(window.location.href);
 	const redirect = redirectUrl ?? url.href;
+	const navigate = useNavigate({ from: "/lives/$id" });
+
 	const { data } = useSWR(
 		"stripe-key",
 		() =>
@@ -76,7 +79,7 @@ export const PaymentFormContainer = ({
 			paymentExit?.();
 			return;
 		}
-		window.location.href = redirect;
+		navigate({ to: redirect });
 	}
 	return (
 		<Elements stripe={stripePromise} options={options}>

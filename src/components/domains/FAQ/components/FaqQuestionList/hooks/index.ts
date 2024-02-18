@@ -14,7 +14,8 @@ export type FAQ = {
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export const useFaqQuestionList = (): IUseFaqQuestionList => {
-	const domain = window.location.hostname.split(".")[0];
+	const domain = "hack-z";
+
 	const { data } = useSWR<FAQ[]>(
 		domain,
 		() => fetcher(`${import.meta.env.VITE_FAQ_BACKEND_URL}/${domain}/faq`),

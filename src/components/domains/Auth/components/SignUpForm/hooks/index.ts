@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { ChangeEvent, useState } from "react";
 type IUseSignUpForm = {
 	handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -15,6 +16,8 @@ export const useSignUpForm = (): IUseSignUpForm => {
 		password: "",
 		name: "",
 	});
+	const navigate = useNavigate({ from: "/auth" });
+
 	const [error, setError] = useState<string>("");
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setInput({
@@ -48,7 +51,7 @@ export const useSignUpForm = (): IUseSignUpForm => {
 				const data = await res.json();
 				if (res.status === 200) {
 					localStorage.setItem("temple-token", data.jwt);
-					window.location.href = "/";
+					navigate({ to: "/" });
 				}
 			}
 		} catch (e) {

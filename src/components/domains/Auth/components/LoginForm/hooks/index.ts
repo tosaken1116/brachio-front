@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { ChangeEvent, useState } from "react";
 export type LoginForm = {
 	email: string;
@@ -14,6 +15,7 @@ export const useLoginForm = (): IUseLoginForm => {
 		email: "",
 		password: "",
 	});
+	const navigate = useNavigate({ from: "/auth" });
 	const [error, setError] = useState<string>("");
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setInput({
@@ -36,7 +38,7 @@ export const useLoginForm = (): IUseLoginForm => {
 			const data = await res.json();
 			if (res.status === 200) {
 				localStorage.setItem("temple-token", data.jwt);
-				window.location.href = "/";
+				navigate({ to: "/" });
 			}
 			if (res.status === 400) {
 				setError("Invalid email or password");

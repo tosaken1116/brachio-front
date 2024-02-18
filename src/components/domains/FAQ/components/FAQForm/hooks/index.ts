@@ -14,7 +14,7 @@ export type TalkType = {
 	isBotLoading?: boolean;
 };
 export const useFAQForm = (): IUseFAQForm => {
-	const domain = window.location.hostname.split(".")[0];
+	const domain = "hack-z";
 
 	const [chat, setChat] = useState<string>("");
 	const [chats, setChats] = useState<TalkType[]>([]);

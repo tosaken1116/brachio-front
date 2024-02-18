@@ -4,8 +4,8 @@ type Props = {
 	text: string;
 	pageTitle: string;
 };
-export const FaqQuestionPresentation = ({ text }: Props) => (
-	<ScrollPaper>
+export const FaqQuestionPresentation = ({ text, pageTitle }: Props) => (
+	<ScrollPaper className="h-80" title={pageTitle}>
 		<article>
 			<p>{text}</p>
 		</article>

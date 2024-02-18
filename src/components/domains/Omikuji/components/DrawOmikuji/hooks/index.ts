@@ -1,26 +1,24 @@
 import { useState } from "react";
-import useSWR from "swr";
 
 type IUseDrawOmikuji = {
 	handleOmikuji: () => void;
 	isLoaded: boolean;
 	result: string;
-	isDraw: boolean;
 };
 
 export const useDrawOmikuji = (): IUseDrawOmikuji => {
 	const [result, setResult] = useState("");
 	const [isLoaded, setIsLoaded] = useState(false);
-	const { data } = useSWR(
-		"/api/omikuji",
-		() =>
-			fetch(`${import.meta.env.VITE_BACKEND_URL}/api/omikuji`, {
-				headers: {
-					Authorization: localStorage.getItem("temple-token") ?? "",
-				},
-			}).then((res) => res.json()),
-		{ suspense: true },
-	);
+	// const { data } = useSWR(
+	//   "/api/omikuji",
+	//   () =>
+	//     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/omikuji`, {
+	//       headers: {
+	//         Authorization: localStorage.getItem("temple-token") ?? "",
+	//       },
+	//     }).then((res) => res.json()),
+	//   { suspense: true }
+	// );
 	const handleOmikuji = async () => {
 		try {
 			setIsLoaded(true);
@@ -51,6 +49,6 @@ export const useDrawOmikuji = (): IUseDrawOmikuji => {
 			console.error(e);
 		}
 	};
-	const isDraw: boolean = data.alreadyDraw;
-	return { handleOmikuji, isLoaded, result, isDraw };
+
+	return { handleOmikuji, isLoaded, result };
 };

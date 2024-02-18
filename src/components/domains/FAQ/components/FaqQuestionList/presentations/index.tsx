@@ -7,7 +7,7 @@ type Props = {
 	projectName: string;
 };
 export const FaqQuestionListPresentation = ({ FAQs }: Props) => (
-	<List className="gap-8  p-4 flex-wrap" column="row">
+	<List className="gap-12 p-4 flex-wrap" column="row">
 		{FAQs.map((faq) => (
 			<FaqQuestion pageTitle={faq.pageTitle} />
 		))}

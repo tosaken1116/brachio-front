@@ -1,6 +1,6 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Link } from "@tanstack/react-router";
 import { BadgeCentIcon, Radio } from "lucide-react";
-import { Link } from "react-router-dom";
 import { Live } from "../hooks";
 type Props = {
 	lives: Live[];
@@ -17,7 +17,7 @@ export const LiveListPresentation = ({ lives }: Props) => (
 
 const Item = (live: Live) => {
 	return (
-		<Link to={`/live/${live.id}`}>
+		<Link to={"/live/$id"} params={{ id: live.id }}>
 			<Card className="w-fit h-fit rounded-3xl">
 				<CardContent className="pt-6">
 					<div>
