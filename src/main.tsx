@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { FAQForm } from "./components/domains/FAQ/components/FAQForm";
+import { AllLive } from "./components/page/AllLive";
 import { Auth } from "./components/page/Auth";
-import { Payment } from "./components/page/Payment";
+import { Live } from "./components/page/Live";
 import { Root } from "./components/page/Root";
+import { Setting } from "./components/page/Setting";
 import "./global.css";
 const router = createBrowserRouter([
 	{
@@ -12,16 +13,20 @@ const router = createBrowserRouter([
 		element: <Root />,
 	},
 	{
-		path: "/payment",
-		element: <Payment />,
-	},
-	{
-		path: "/faq",
-		element: <FAQForm />,
-	},
-	{
 		path: "/auth",
 		element: <Auth />,
+	},
+	{
+		path: "/live",
+		element: <AllLive />,
+	},
+	{
+		path: "/live:id",
+		element: <Live />,
+	},
+	{
+		path: "/setting",
+		element: <Setting />,
 	},
 ]);
 // biome-ignore lint/style/noNonNullAssertion: <explanation>

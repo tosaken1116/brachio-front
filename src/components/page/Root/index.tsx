@@ -1,11 +1,9 @@
-import { Comment } from "@/components/domains/Live/components/Comment";
-import { CommentTimeline } from "@/components/domains/Live/components/CommentTimeline";
+import { DrawOmikuji } from "@/components/domains/Omikuji/components/DrawOmikuji";
 
 export const Root = () => {
 	return (
-		<>
-			<CommentTimeline />
-			<Comment />
-		</>
+		<div className="w-full h-screen flex justify-center items-center">
+			<DrawOmikuji />
+		</div>
 	);
 };

@@ -11,6 +11,8 @@ export const CommentContainer = () => {
 		isSuper,
 		isCommentInput,
 		comment,
+		paying,
+		paymentExit,
 	} = useComment();
 	return (
 		<CommentPresentation
@@ -23,6 +25,8 @@ export const CommentContainer = () => {
 			abortSuper={abortSuper}
 			isCommentInput={isCommentInput}
 			comment={comment}
+			paying={paying}
+			paymentExit={paymentExit}
 		/>
 	);
 };

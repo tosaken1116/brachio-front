@@ -2,9 +2,11 @@ import { Elements } from "@stripe/react-stripe-js";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { FormEvent } from "react";
+import { FormEvent, Suspense } from "react";
 import useSWR from "swr";
+import { LoadingDot } from "../icon/LoadingDot";
 import { Button } from "../ui/button";
+import { Dialog } from "../ui/dialog";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -19,9 +21,44 @@ const fetcher = (url: string, amount: number) =>
 			amount,
 		}),
 	}).then((res) => res.json());
-export const PaymentForm = () => {
+
+export const PaymentForm = ({
+	amount = 5000,
+	redirectUrl,
+	paymentExit,
+}: {
+	amount?: number;
+	redirectUrl?: string | null;
+	paymentExit?: () => void;
+}) => {
+	return (
+		<Suspense
+			fallback={
+				<span>
+					<p>支払い中</p>
+					<LoadingDot />
+				</span>
+			}
+		>
+			<PaymentFormContainer
+				amount={amount}
+				redirectUrl={redirectUrl}
+				paymentExit={paymentExit}
+			/>
+		</Suspense>
+	);
+};
+export const PaymentFormContainer = ({
+	amount = 5000,
+	redirectUrl,
+	paymentExit,
+}: {
+	amount?: number;
+	redirectUrl?: string | null;
+	paymentExit?: () => void;
+}) => {
 	const url = new URL(window.location.href);
-	const amount = parseInt(url.searchParams.get("amount") ?? "5000") ?? 5000;
+	const redirect = redirectUrl ?? url.href;
 	const { data } = useSWR(
 		"stripe-key",
 		() =>
@@ -31,25 +68,32 @@ export const PaymentForm = () => {
 			),
 		{ suspense: true },
 	);
-	const redirectUrl =
-		url.searchParams.getAll("redirect_url")[0] ??
-		(import.meta.env.DEV
-			? "http://localhost:5173"
-			: `${url.protocol}//${url.hostname}`);
 	const options = {
 		clientSecret: data.clientSecret,
 	};
-	if (data.automaticPayment) {
-		window.location.href = redirectUrl;
+	if (data.automaticPayment && redirectUrl !== null) {
+		if (window.location.href === redirect) {
+			paymentExit?.();
+			return;
+		}
+		window.location.href = redirect;
 	}
 	return (
 		<Elements stripe={stripePromise} options={options}>
-			<CheckoutForm redirectUrl={redirectUrl} />
+			<Dialog open={true}>
+				<CheckoutForm redirectUrl={redirect} paymentExit={paymentExit} />
+			</Dialog>
 		</Elements>
 	);
 };
 
-const CheckoutForm = ({ redirectUrl }: { redirectUrl: string }) => {
+const CheckoutForm = ({
+	redirectUrl,
+	paymentExit,
+}: {
+	redirectUrl: string;
+	paymentExit?: () => void;
+}) => {
 	const stripe = useStripe();
 	const elements = useElements();
 
@@ -66,10 +110,10 @@ const CheckoutForm = ({ redirectUrl }: { redirectUrl: string }) => {
 				return_url: redirectUrl,
 			},
 		});
-
 		if (result.error) {
 			console.log(result.error.message);
 		} else {
+			paymentExit?.();
 		}
 	};
 	return (
