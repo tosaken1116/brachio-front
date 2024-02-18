@@ -1,3 +1,5 @@
+import { LiveList } from "@/components/domains/Live/components/LiveList";
+
 export const AllLive = () => {
-	return <>this is page of AllLive </>;
+	return <LiveList />;
 };

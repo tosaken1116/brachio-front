@@ -1,4 +1,7 @@
+import { Comment } from "@/components/domains/Live/components/Comment";
+import { Button } from "@/components/ui/button";
 import Hls from "hls.js";
+import { LogInIcon } from "lucide-react";
 import { FC, useEffect, useMemo, useRef } from "react";
 import TRTC from "trtc-sdk-v5";
 import { getUserSigniture } from "../../../libs/getUserSigniture";
@@ -8,7 +11,6 @@ export const Live: FC = () => {
 	const sdkAppId = Number(import.meta.env.VITE_TRTC_SDK_APP_ID);
 
 	const myId = crypto.randomUUID().replace(/-/g, "_");
-
 	const handleClickParticipant = () => {
 		const d = async () => {
 			const userSig = await getUserSigniture(myId);
@@ -57,19 +59,25 @@ export const Live: FC = () => {
 			});
 		});
 	};
-
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		handleClickAudience();
+	}, []);
 	return (
 		<div>
-			<h1>hey</h1>
-			<button type="button" onClick={() => handleClickAudience()}>
-				配信を見る
-			</button>
-			<button type="button" onClick={() => handleClickParticipant()}>
-				配信を行う
-			</button>
-			<div id="local-video" />
 			<div id="hoge" />
-			<Player src={`${import.meta.env.VITE_HLS_URL}`} />
+			<div className="flex flex-row gap-4">
+				<Player src={`${import.meta.env.VITE_HLS_URL}`} />
+				<div className="flex flex-col gap-2">
+					<Comment />
+					<Button type="button" onClick={() => handleClickParticipant()}>
+						<span className="flex flex-row items-center gap-4 font-bold">
+							<LogInIcon />
+							配信に参加する
+						</span>
+					</Button>
+				</div>
+			</div>
 		</div>
 	);
 };
