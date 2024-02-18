@@ -25,8 +25,10 @@ export const loginWithGoogle = () =>
 		.then((result) => {
 			const credential = GoogleAuthProvider.credentialFromResult(result);
 			if (credential === null) return;
-			const token = credential.accessToken;
+			const token = credential.idToken;
 			localStorage.setItem("google-token", token ?? "");
+			localStorage.setItem("uid", result.user?.uid ?? "");
+			window.location.href = "/";
 		})
 		.catch(() => {
 			throw new Error("Google Login Error");

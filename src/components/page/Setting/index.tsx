@@ -1,3 +1,5 @@
+import { FaqSettingForm } from "@/components/domains/FAQ/components/FaqSettingForm";
+
 export const Setting = () => {
-	return <>this is page of Setting </>;
+	return <FaqSettingForm />;
 };
