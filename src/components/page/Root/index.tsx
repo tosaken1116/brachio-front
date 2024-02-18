@@ -1,3 +1,4 @@
+import { AdminLogin } from "@/components/domains/Auth/components/AdminLogin";
 import { DrawOmikuji } from "@/components/domains/Omikuji/components/DrawOmikuji";
 import {
 	DrawOmikujiPresentation,
@@ -7,7 +8,7 @@ import {
 export const Root = () => {
 	return (
 		<div className="w-full h-screen flex justify-center items-center">
-			<DrawOmikuji />
+			<AdminLogin />
 		</div>
 	);
 };
