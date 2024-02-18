@@ -1,3 +1,6 @@
+import { useEffect, useRef, useState } from "react";
+import ReconnectingWebSocket from "reconnecting-websocket";
+
 type IUseCommentTimeline = {
 	comments: Comment[];
 	isEmpty: boolean;
@@ -11,21 +14,39 @@ export type Comment = {
 };
 
 export const useCommentTimeline = (): IUseCommentTimeline => {
-	const comments = [
-		{
-			userName: "user1",
-			price: 100,
-			comment:
-				"comment1aaaaaaaaaacomment1aaaaaaaaaacomment1aaaaaaaaaacomment1aaaaaaaaaa",
-			timestamp: "2021-09-01 01:00:00",
-		},
-		{
-			userName: "user2",
-			price: 200,
-			comment: "comment2",
-			timestamp: "2021-09-01 00:00:00",
-		},
-	];
+	const socketRef = useRef<ReconnectingWebSocket>();
+	const [comments, setComments] = useState<Comment[]>([]);
+	let websocket: ReconnectingWebSocket;
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		const onMessage = (event: MessageEvent<string>) => {
+			const data: Comment = JSON.parse(event.data);
+			setComments((prev) => [...prev, data]);
+		};
+		fetch(`https://${import.meta.env.VITE_WS_URL}/ott`, {
+			headers: {
+				Authorization: localStorage.getItem("temple-token") ?? "",
+			},
+		}).then((res) => {
+			res.json().then((data) => {
+				console.log(data);
+				websocket = new ReconnectingWebSocket(
+					`wss://${import.meta.env.VITE_WS_URL}?token=${data.token}/ws` ??
+						"ws://localhost:80/ws",
+				);
+				socketRef.current = websocket;
+
+				websocket.addEventListener("message", onMessage);
+			});
+		});
+
+		return () => {
+			if (websocket) {
+				websocket.close();
+				websocket.removeEventListener("message", onMessage);
+			}
+		};
+	}, []);
 	const isEmpty = comments.length === 0;
 	return { comments, isEmpty };
 };
