@@ -1,3 +1,4 @@
+import { PaymentForm } from "@/components/functional/Payment";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
@@ -17,6 +18,8 @@ type Props = {
 	abortSuper: () => void;
 	isCommentInput: boolean;
 	comment: string;
+	paying: boolean;
+	paymentExit: () => void;
 };
 const prices = [
 	0, 200, 500, 1000, 2000, 5000, 10000, 20000, 30000, 40000, 50000,
@@ -57,6 +60,8 @@ export const CommentPresentation = ({
 	changeToSuper,
 	isCommentInput,
 	comment,
+	paying,
+	paymentExit,
 }: Props) => (
 	<Card className="max-w-96 relative">
 		<CardContent className="h-96">
@@ -110,6 +115,12 @@ export const CommentPresentation = ({
 									/>
 								</CardContent>
 							</Card>
+							{paying && (
+								<PaymentForm
+									amount={prices[priceIndex]}
+									paymentExit={paymentExit}
+								/>
+							)}
 
 							<p className="text-center">{prices[priceIndex]}JPY</p>
 							<Slider
