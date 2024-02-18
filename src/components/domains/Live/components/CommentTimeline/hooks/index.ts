@@ -1,3 +1,4 @@
+import { useRefStore } from "@/store/useRefStore";
 import { useEffect, useRef, useState } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
 
@@ -16,6 +17,7 @@ export type Comment = {
 export const useCommentTimeline = (): IUseCommentTimeline => {
 	const socketRef = useRef<ReconnectingWebSocket>();
 	const [comments, setComments] = useState<Comment[]>([]);
+	const setRef = useRefStore((state) => state.setRef);
 	let websocket: ReconnectingWebSocket;
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
@@ -23,6 +25,7 @@ export const useCommentTimeline = (): IUseCommentTimeline => {
 			const data: Comment = JSON.parse(event.data);
 			setComments((prev) => [...prev, data]);
 		};
+
 		fetch(`https://${import.meta.env.VITE_WS_URL}/ott`, {
 			headers: {
 				Authorization: localStorage.getItem("temple-token") ?? "",
@@ -31,10 +34,11 @@ export const useCommentTimeline = (): IUseCommentTimeline => {
 			res.json().then((data) => {
 				console.log(data);
 				websocket = new ReconnectingWebSocket(
-					`wss://${import.meta.env.VITE_WS_URL}?token=${data.token}/ws` ??
+					`wss://${import.meta.env.VITE_WS_URL}/hoge/ws?token=${data.token}` ??
 						"ws://localhost:80/ws",
 				);
 				socketRef.current = websocket;
+				setRef(socketRef);
 
 				websocket.addEventListener("message", onMessage);
 			});

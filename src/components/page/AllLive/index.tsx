@@ -1,3 +1,5 @@
+import { Comment } from "@/components/domains/Live/components/Comment";
+
 export const AllLive = () => {
-	return <>this is page of AllLive </>;
+	return <Comment />;
 };
