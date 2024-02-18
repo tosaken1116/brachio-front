@@ -1,5 +1,4 @@
 import { loginWithGoogle } from "@/libs/firebase";
-import { useState } from "react";
 
 type IUseAdminLogin = {
 	login: () => void;
