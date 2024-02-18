@@ -3,6 +3,7 @@ import { FaqQuestionList } from "@/components/domains/FAQ/components/FaqQuestion
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { useKeyCommand } from "@/hooks/KeyCommand";
+import { Navigate, redirect, useNavigation } from "react-router-dom";
 
 export const Root = () => {
 	useKeyCommand(
@@ -19,9 +20,10 @@ export const Root = () => {
 			"a",
 		],
 		() => {
-			window.location.href = "/lives";
+			window.location.replace("/lives");
 		},
 	);
+
 	return (
 		<div className="w-full h-screen flex justify-center items-center">
 			<Drawer>
