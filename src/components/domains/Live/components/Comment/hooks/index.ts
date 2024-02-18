@@ -1,4 +1,6 @@
+import { useRefStore } from "@/store/useRefStore";
 import { ChangeEvent, useState } from "react";
+import { prices } from "../presentations";
 
 type IUseComment = {
 	handleChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
@@ -19,6 +21,8 @@ export const useComment = (): IUseComment => {
 	const [priceIndex, setPriceIndex] = useState(0);
 	const [isSuper, setIsSuper] = useState(false);
 	const [isPaying, setIsPaying] = useState(false);
+	const socketRef = useRefStore((state) => state.socketRef);
+
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setInput(e.target.value);
 	};
@@ -32,9 +36,15 @@ export const useComment = (): IUseComment => {
 		await new Promise((resolve) => {
 			setTimeout(() => {
 				resolve(null);
-				console.log(input);
+				console.log("sss");
 			}, 1000);
 		});
+		socketRef?.current?.send(
+			JSON.stringify({
+				price: prices[priceIndex],
+				comment: input,
+			}),
+		);
 		setInput("");
 		setIsSuper(false);
 	};
